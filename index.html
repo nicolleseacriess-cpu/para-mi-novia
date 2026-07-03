@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Alguien Especial</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #0b0c10;
+            color: #c5c6c7;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        .container {
+            max-width: 450px;
+            width: 100%;
+            background: #1f2833;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border: 1px solid #45f3ff;
+        }
+        h1 {
+            color: #45f3ff;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            background: transparent;
+            color: #fff;
+            border: 2px solid #45f3ff;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            width: 100%;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: #45f3ff;
+            color: #0b0c10;
+            box-shadow: 0 0 15px #45f3ff;
+        }
+        .hidden {
+            display: none;
+        }
+        .message {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #fff;
+            white-space: pre-line;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Pantalla de Inicio -->
+    <div id="start-screen">
+        <h1>¿Qué tan bien me conocés? 🤍</h1>
+        <p>Preparé un minijuego para vos. Si respondés bien todas las preguntas, vas a desbloquear una sorpresa.</p>
+        <button class="btn" onclick="startTrivia()">Empezar a jugar</button>
+    </div>
+
+    <!-- Pantalla de Preguntas -->
+    <div id="quiz-screen" class="hidden">
+        <h1 id="question-text">Pregunta</h1>
+        <div id="options-container"></div>
+    </div>
+
+    <!-- Pantalla Final (Mensaje Oculto) -->
+    <div id="final-screen" class="hidden">
+        <h1>¡Ganaste! 👑</h1>
+        <p class="message" id="love-message">Acá va a ir tu carta romántica personalizada cuando me digas qué querés escribirle.</p>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            q: "¿Cuál es mi comida favorita en el mundo?",
+            options: ["Milanesas con papas fritas", "Hamburguesas", "Asado", "Pizza"],
+            answer: 2 // Cambiá el número (0, 1, 2, 3) según cuál sea la opción correcta
+        },
+        {
+            q: "¿Qué es lo que más me gusta hacer cuando estamos juntos?",
+            options: ["Mirar películas/series", "Ir a comer afuera", "Caminar y charlar", "Todas las anteriores"],
+            answer: 3
+        }
+    ];
+
+    let currentQuestionIndex = 0;
+
+    function startTrivia() {
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        showQuestion();
+    }
+
+    function showQuestion() {
+        const currentQuestion = questions[currentQuestionIndex];
+        document.getElementById('question-text').innerText = currentQuestion.q;
+        const optionsContainer = document.getElementById('options-container');
+        optionsContainer.innerHTML = '';
+
+        currentQuestion.options.forEach((option, index) => {
+            const button = document.createElement('button');
+            button.innerText = option;
+            button.classList.add('btn');
+            button.onclick = () => checkAnswer(index);
+            optionsContainer.appendChild(button);
+        });
+    }
+
+    function checkAnswer(selectedIndex) {
+        if (selectedIndex === questions[currentQuestionIndex].answer) {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+            } else {
+                showFinalScreen();
+            }
+        } else {
+            alert("❌ ¡Respuesta incorrecta! Intentalo de nuevo amor.");
+        }
+    }
+
+    function showFinalScreen() {
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('final-screen').classList.remove('hidden');
+    }
+</script>
+
+</body>
+</html>
